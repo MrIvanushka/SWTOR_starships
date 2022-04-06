@@ -49,6 +49,8 @@ public:
 	//OBJ file loaded model
 	Model(
 		glm::vec3 position,
+		glm::vec3 rotation,
+		float scale,
 		Material* material,
 		Texture* orTexDif,
 		Texture* orTexSpec,
@@ -64,12 +66,13 @@ public:
 		this->meshes.push_back(new Mesh(mesh.data(), mesh.size(), NULL, 0, glm::vec3(1.f, 0.f, 0.f),
 			glm::vec3(0.f),
 			glm::vec3(0.f),
-			glm::vec3(1.f)));
+			glm::vec3(scale)));
 
 		for (auto& i : this->meshes)
 		{
 			i->move(this->position);
 			i->setOrigin(this->position);
+			i->rotate(rotation);
 		}
 	}
 

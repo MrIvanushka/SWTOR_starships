@@ -64,6 +64,7 @@ private:
 	std::vector<Material*> materials;
 
 	//Models
+	Model* skybox;
 	std::vector<Model*> models;
 
 	//Lights
@@ -81,7 +82,6 @@ private:
 	void initShaders();
 	void initTextures();
 	void initMaterials();
-	void initOBJModels();
 	void initModels();
 	void initPointLights();
 	void initLights();

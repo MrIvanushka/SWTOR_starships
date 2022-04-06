@@ -130,6 +130,7 @@
     <ClInclude Include="Model.h" />
     <ClInclude Include="OBJLoader.h" />
     <ClInclude Include="Primitives.h" />
+    <ClInclude Include="Skybox.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="libs.h" />
     <ClInclude Include="Material.h" />
