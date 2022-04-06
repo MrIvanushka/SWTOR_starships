@@ -46,7 +46,7 @@ Vector3 operator + (const Vector3 v1, const Vector3 v2)
 	return Vector3(coord1[0] + coord2[0], coord1[1] + coord2[1], coord1[2] + coord2[2]);
 }
 
-Vector3 operator + (const Vector3 v1, const Vector3 v2)
+Vector3 operator - (const Vector3 v1, const Vector3 v2)
 {
 	std::vector<float> coord1;
 	std::vector<float> coord2;
