@@ -6,8 +6,8 @@ class Vector3 {
 	public:
 		Vector3(float x, float y, float z);
 		~Vector3() {};
-		const std::vector<float> get_coord();
-		void set_coord(float n_x, float n_y, float n_z);
+		const std::vector<float> getCoord();
+		void setCoord(float n_x, float n_y, float n_z);
 
 	private:
 		float x;
@@ -22,7 +22,7 @@ inline Vector3::Vector3(float x, float y, float z)
 	this->z = z;
 }
 
-const std::vector<float> Vector3::get_coord()
+const std::vector<float> Vector3::getCoord()
 {
 	std::vector<float> coord;
 	coord.push_back(x);
@@ -31,7 +31,7 @@ const std::vector<float> Vector3::get_coord()
 	return coord;
 }
 
-inline void Vector3::set_coord(const float n_x, const float n_y, const float n_z)
+inline void Vector3::setCoord(const float n_x, const float n_y, const float n_z)
 {
 	this->x = n_x;
 	this->y = n_y;
