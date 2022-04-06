@@ -84,112 +84,26 @@ void Game::initMatrices()
 	);
 }
 
-void Game::initShaders()
+void Game::initScenes()
 {
-	this->shaders.push_back(new Shader(this->GL_VERSION_MAJOR, this->GL_VERSION_MINOR,
-		"vertex_core.glsl", "fragment_core.glsl"));
-	this->shaders.push_back(new Shader(this->GL_VERSION_MAJOR, this->GL_VERSION_MINOR,
-		"vertex_skybox.glsl", "fragment_skybox.glsl"));
-}
-
-void Game::initTextures()
-{
-	//TEXTURE 0
-	this->textures.push_back(new Texture("Images/pusheen.png", GL_TEXTURE_2D));
-	this->textures.push_back(new Texture("Images/pusheen_specular.png", GL_TEXTURE_2D));
-
-	//TEXTURE 1
-	this->textures.push_back(new Texture("Images/panels01_d.png", GL_TEXTURE_2D));
-	this->textures.push_back(new Texture("Images/panels01_n.png", GL_TEXTURE_2D));
-
-	this->textures.push_back(new Texture("Images/skybox.png", GL_TEXTURE_2D));
-}
-
-void Game::initMaterials()
-{
-	this->materials.push_back(new Material(glm::vec3(0.1f), glm::vec3(1.f), glm::vec3(1.f), 
-		0, 1));
-}
-
-void Game::initModels()
-{
-	this->skybox = new Model(
-		glm::vec3(2.f, 0.f, 2.f), glm::vec3(180.f, 0.f, 0.f), 5,
-		this->materials[0],
-		this->textures[4],
-		this->textures[TEX_CONTAINER_SPECULAR],
-		"OBJFiles/skybox.obj"
-	);
-
-
-	this->models.push_back(new Model(
-		glm::vec3(-3.f, 0.f, -20.f), glm::vec3(0.f, 0.f, 0.f), 1,
-		this->materials[0],
-		this->textures[TEX_CONTAINER],
-		this->textures[TEX_CONTAINER_SPECULAR],
-		"OBJFiles/ddh.obj"
-	)
-	);
-
-	this->models.push_back(new Model(
-		glm::vec3(3.f, 0.f, 10.f), glm::vec3(0.f, 240.f, 0.f), 0.4,
-		this->materials[0],
-		this->textures[TEX_CONTAINER],
-		this->textures[TEX_CONTAINER_SPECULAR],
-		"OBJFiles/Valor.obj"
-	)
-	);
-}
-
-void Game::initPointLights()
-{
-	this->pointLights.push_back(new PointLight(glm::vec3(0.f, 5.f, 0.f)));
-}
-
-void Game::initLights()
-{
-	this->initPointLights();
-}
-
-void Game::initUniforms()
-{
-	//INIT UNIFORMS
-	this->shaders[SHADER_CORE_PROGRAM]->setMat4fv(ViewMatrix, "ViewMatrix");
-	this->shaders[SHADER_CORE_PROGRAM]->setMat4fv(ProjectionMatrix, "ProjectionMatrix");
-
-	for each (PointLight* pl in this->pointLights)
-	{
-		pl->sendToShader(*this->shaders[SHADER_CORE_PROGRAM]);
-	}
+	this->scenes.push_back(new Scene(GL_VERSION_MAJOR, GL_VERSION_MINOR, ViewMatrix, ProjectionMatrix));
+	this->currentSceneIndex = 0;
 }
 
 void Game::updateUniforms()
 {
-	for (int i = 0; i < shaders.size(); i++)
-	{
-		//Update view matrix (camera)
-		this->ViewMatrix = this->camera.getViewMatrix();
+	this->ViewMatrix = this->camera.getViewMatrix();
 
-		this->shaders[i]->setMat4fv(this->ViewMatrix, "ViewMatrix");
-		this->shaders[i]->setVec3f(this->camera.getPosition(), "cameraPos");
+	glfwGetFramebufferSize(this->window, &this->framebufferWidth, &this->framebufferHeight);
 
-		for each (PointLight * pl in this->pointLights)
-		{
-			pl->sendToShader(*this->shaders[i]);
-		}
+	this->ProjectionMatrix = glm::perspective(
+		glm::radians(this->fov),
+		static_cast<float>(this->framebufferWidth) / this->framebufferHeight,
+		this->nearPlane,
+		this->farPlane
+	);
 
-		//Update framebuffer size and projection matrix
-		glfwGetFramebufferSize(this->window, &this->framebufferWidth, &this->framebufferHeight);
-
-		this->ProjectionMatrix = glm::perspective(
-			glm::radians(this->fov),
-			static_cast<float>(this->framebufferWidth) / this->framebufferHeight,
-			this->nearPlane,
-			this->farPlane
-		);
-
-		this->shaders[i]->setMat4fv(this->ProjectionMatrix, "ProjectionMatrix");
-	}
+		this->scenes[currentSceneIndex]->updateUniforms(ViewMatrix, ProjectionMatrix, camera.getPosition());
 }
 
 //Constructors / Destructors
@@ -237,33 +151,13 @@ Game::Game(
 	this->initOpenGLOptions();
 
 	this->initMatrices();
-	this->initShaders();
-	this->initTextures();
-	this->initMaterials();
-	this->initModels();
-	this->initLights();
-	this->initUniforms();
+	this->initScenes();
 }
 
 Game::~Game()
 {
 	glfwDestroyWindow(this->window);
 	glfwTerminate();
-
-	for (size_t i = 0; i < this->shaders.size(); i++)
-		delete this->shaders[i];
-	
-	for (size_t i = 0; i < this->textures.size(); i++)
-		delete this->textures[i];
-
-	for (size_t i = 0; i < this->materials.size(); i++)
-		delete this->materials[i];
-
-	for (auto*& i : this->models)
-		delete i;
-
-	for (size_t i = 0; i < this->pointLights.size(); i++)
-		delete this->pointLights[i];
 }
 
 //Accessor
@@ -306,10 +200,10 @@ void Game::updateMouseInput()
 	this->lastMouseY = this->mouseY;
 
 	//Move light
-	if (glfwGetMouseButton(this->window, GLFW_MOUSE_BUTTON_1) == GLFW_PRESS)
-	{
-		this->pointLights[0]->setPosition(this->camera.getPosition());
-	}
+	//if (glfwGetMouseButton(this->window, GLFW_MOUSE_BUTTON_1) == GLFW_PRESS)
+	//{
+	//	this->scenes[0]->pointLights[0]->setPosition(this->camera.getPosition());
+	//}
 }
 
 void Game::updateKeyboardInput()
@@ -361,10 +255,7 @@ void Game::update()
 	//UPDATE INPUT ---
 	this->updateDt();
 	this->updateInput();
-
-	//this->models[0]->rotate(glm::vec3(0.f, 1.f, 0.f));
-	//this->models[1]->rotate(glm::vec3(0.f, 1.f, 0.f));
-	//this->models[2]->rotate(glm::vec3(0.f, 1.f, 0.f));
+	this->scenes[currentSceneIndex]->update(dt);
 }
 
 void Game::render()
@@ -377,16 +268,10 @@ void Game::render()
 	glClearColor(0.f, 0.f, 0.f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-	//skybox->render(this->shaders[SHADER_CORE_PROGRAM]);
-
 	//Update the uniforms
 	this->updateUniforms();
 
-
-	skybox->render(this->shaders[1]);
-	//Render models
-	for (auto&i : this->models)
-		i->render(this->shaders[SHADER_CORE_PROGRAM]);
+	this->scenes[currentSceneIndex]->render();
 
 	//End Draw
 	glfwSwapBuffers(window);

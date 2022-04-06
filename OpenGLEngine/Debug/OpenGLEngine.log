@@ -1,4 +1,5 @@
-﻿  Game.cpp
-C:\Users\ivanb\source\repos\SWTOR_starships\OpenGLEngine\Game.cpp(141,2): warning C4305: аргумент: усечение из "double" в "float"
-C:\Users\ivanb\source\repos\SWTOR_starships\OpenGLEngine\Game.cpp(168,20): warning C4018: <: несоответствие типов со знаком и без знака
+﻿  Scene.cpp
+C:\Users\ivanb\source\repos\SWTOR_starships\OpenGLEngine\Scene.cpp(79,2): warning C4305: аргумент: усечение из "double" в "float"
+C:\Users\ivanb\source\repos\SWTOR_starships\OpenGLEngine\Scene.cpp(88,2): warning C4305: аргумент: усечение из "double" в "float"
+C:\Users\ivanb\source\repos\SWTOR_starships\OpenGLEngine\Scene.cpp(118,21): warning C4018: <: несоответствие типов со знаком и без знака
   OpenGLEngine.vcxproj -> C:\Users\ivanb\source\repos\SWTOR_starships\Debug\SWTOR.exe

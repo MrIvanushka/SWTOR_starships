@@ -25,5 +25,4 @@
 #include"Material.h"
 #include"Mesh.h"
 #include"Model.h"
-#include"Skybox.h"
 #include"Light.h"

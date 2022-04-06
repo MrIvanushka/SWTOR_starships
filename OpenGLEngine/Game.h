@@ -2,6 +2,7 @@
 
 #include "libs.h"
 #include "Camera.h"
+#include "Scene.h"
 
 //ZOOOOOOOOOOOM IN BEFORE RECORDING!
 
@@ -54,21 +55,8 @@ private:
 	float nearPlane;
 	float farPlane;
 
-	//Shaders
-	std::vector<Shader*> shaders;
-
-	//Textures
-	std::vector<Texture*> textures;
-
-	//Materials
-	std::vector<Material*> materials;
-
-	//Models
-	Model* skybox;
-	std::vector<Model*> models;
-
-	//Lights
-	std::vector<PointLight*> pointLights;
+	std::vector<Scene*> scenes;
+	unsigned currentSceneIndex;
 
 //Private functions
 	void initGLFW();
@@ -79,13 +67,7 @@ private:
 	void initGLEW(); //AFTER CONTEXT CREATION!!!
 	void initOpenGLOptions();
 	void initMatrices();
-	void initShaders();
-	void initTextures();
-	void initMaterials();
-	void initModels();
-	void initPointLights();
-	void initLights();
-	void initUniforms();
+	void initScenes();
 
 	void updateUniforms();
 
@@ -114,7 +96,6 @@ public:
 	void updateInput();
 	void update();
 	void render();
-
 //Static functions
 	static void framebuffer_resize_callback(GLFWwindow* window, int fbW, int fbH);
 };
