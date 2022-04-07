@@ -86,7 +86,7 @@ void Game::initMatrices()
 
 void Game::initScenes()
 {
-	this->scenes.push_back(new Scene(GL_VERSION_MAJOR, GL_VERSION_MINOR, ViewMatrix, ProjectionMatrix));
+	this->scenes.push_back(new SpaceScene(GL_VERSION_MAJOR, GL_VERSION_MINOR, ViewMatrix, ProjectionMatrix));
 	this->currentSceneIndex = 0;
 }
 

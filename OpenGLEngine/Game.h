@@ -3,6 +3,7 @@
 #include "libs.h"
 #include "Camera.h"
 #include "Scene.h"
+#include "SpaceScene.h"
 
 //ZOOOOOOOOOOOM IN BEFORE RECORDING!
 

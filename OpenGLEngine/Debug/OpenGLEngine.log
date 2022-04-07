@@ -1,5 +1,9 @@
-﻿  Scene.cpp
-C:\Users\ivanb\source\repos\SWTOR_starships\OpenGLEngine\Scene.cpp(79,2): warning C4305: аргумент: усечение из "double" в "float"
-C:\Users\ivanb\source\repos\SWTOR_starships\OpenGLEngine\Scene.cpp(88,2): warning C4305: аргумент: усечение из "double" в "float"
-C:\Users\ivanb\source\repos\SWTOR_starships\OpenGLEngine\Scene.cpp(118,21): warning C4018: <: несоответствие типов со знаком и без знака
+﻿  main.cpp
+  Scene.cpp
+C:\Users\ivanb\source\repos\SWTOR_starships\OpenGLEngine\Scene.cpp(54,21): warning C4018: <: несоответствие типов со знаком и без знака
+  SpaceScene.cpp
+C:\Users\ivanb\source\repos\SWTOR_starships\OpenGLEngine\SpaceScene.cpp(59,2): warning C4305: аргумент: усечение из "double" в "float"
+C:\Users\ivanb\source\repos\SWTOR_starships\OpenGLEngine\SpaceScene.cpp(68,2): warning C4305: аргумент: усечение из "double" в "float"
+  Создание кода...
+LINK : warning LNK4098: библиотека по умолчанию "MSVCRT" конфликтует с использованием других библиотек; используйте /NODEFAULTLIB:library
   OpenGLEngine.vcxproj -> C:\Users\ivanb\source\repos\SWTOR_starships\Debug\SWTOR.exe

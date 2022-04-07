@@ -123,6 +123,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SpaceScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
@@ -132,6 +133,7 @@
     <ClInclude Include="OBJLoader.h" />
     <ClInclude Include="Primitives.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="SpaceScene.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="libs.h" />
     <ClInclude Include="Material.h" />
