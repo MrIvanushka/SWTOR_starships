@@ -32,34 +32,22 @@ void SpaceScene::initMaterials()
 		0, 1));
 }
 
-void SpaceScene::initModels()
+void SpaceScene::initObjects()
 {
-	this->skybox = new Model(
-		glm::vec3(2.f, 0.f, 2.f), glm::vec3(180.f, 0.f, 0.f), 5,
-		this->materials[0],
-		this->textures[4],
-		this->textures[0],
-		"OBJFiles/skybox.obj"
-	);
+	GameObject* skybox = new GameObject(glm::vec3(2.f, 0.f, 2.f), glm::vec3(180.f, 0.f, 0.f));
+	skybox->addComponent<Model>();
+	skybox->getComponent<Model>()->initialize(5.f,  this->materials[0], this->shaders[1], this->textures[4], this->textures[0], "OBJFiles/skybox.obj");
+	this->gameObjects.push_back(skybox);
 
+	GameObject* harrower = new GameObject(glm::vec3(-3.f, 0.f, 20.f), glm::vec3(0.f, 0.f, 0.f));
+	harrower->addComponent<Model>();
+	harrower->getComponent<Model>()->initialize(0.2f, this->materials[0], this->shaders[0], this->textures[2], this->textures[3], "OBJFiles/Harrower.obj");
+	this->gameObjects.push_back(harrower);
 
-	this->models.push_back(new Model(
-		glm::vec3(-3.f, 0.f, 20.f), glm::vec3(0.f, 0.f, 0.f), 0.2,
-		this->materials[0],
-		this->textures[2],
-		this->textures[3],
-		"OBJFiles/Harrower.obj"
-	)
-	);
-
-	this->models.push_back(new Model(
-		glm::vec3(3.f, 0.f, -10.f), glm::vec3(0.f, 60.f, 0.f), 0.4,
-		this->materials[0],
-		this->textures[2],
-		this->textures[3],
-		"OBJFiles/Valor.obj"
-	)
-	);
+	GameObject* valor = new GameObject(glm::vec3(3.f, 0.f, -10.f), glm::vec3(0.f, 60.f, 0.f));
+	valor->addComponent<Model>();
+	valor->getComponent<Model>()->initialize(0.4f, this->materials[0], this->shaders[0], this->textures[2], this->textures[3], "OBJFiles/Valor.obj");
+	this->gameObjects.push_back(valor);
 }
 
 void SpaceScene::initPointLights()

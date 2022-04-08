@@ -1,3 +1,2 @@
-﻿  GameObject.cpp
-LINK : warning LNK4098: библиотека по умолчанию "MSVCRT" конфликтует с использованием других библиотек; используйте /NODEFAULTLIB:library
+﻿  SpaceScene.cpp
   OpenGLEngine.vcxproj -> C:\Users\ivanb\source\repos\SWTOR_starships\Debug\SWTOR.exe

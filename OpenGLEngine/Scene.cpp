@@ -6,7 +6,7 @@ void Scene::initialize(int GL_VERSION_MAJOR, int GL_VERSION_MINOR, const glm::ma
 	this->initShaders(GL_VERSION_MAJOR, GL_VERSION_MINOR);
 	this->initTextures();
 	this->initMaterials();
-	this->initModels();
+	this->initObjects();
 	this->initPointLights();
 	this->initUniforms(ViewMatrix, ProjectionMatrix);
 }
@@ -22,7 +22,7 @@ Scene::~Scene()
 	for (size_t i = 0; i < this->materials.size(); i++)
 		delete this->materials[i];
 
-	for (auto*& i : this->models)
+	for (GameObject* i : this->gameObjects)
 		delete i;
 
 	for (size_t i = 0; i < this->pointLights.size(); i++)
@@ -62,13 +62,16 @@ void Scene::updateUniforms(const glm::mat4& ViewMatrix, const glm::mat4& Project
 
 void Scene::update(float deltaTime)
 {
-
+	for (GameObject* object : this->gameObjects)
+	{
+		object->update(deltaTime);
+	}
 }
 
 void Scene::render()
 {
-	skybox->render(this->shaders[1]);
-	//Render models
-	for (auto& i : this->models)
-		i->render(this->shaders[SHADER_CORE_PROGRAM]);
+	for (GameObject* object : this->gameObjects)
+	{
+		object->render();
+	}
 }

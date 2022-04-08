@@ -1,20 +1,32 @@
 #pragma once
 
-#include "libs.h"
+#include<glm.hpp>
+#include<vec3.hpp>
 #include <set>
 
 class Component;
 
-class GameObject
+class OrientedPoint
 {
+protected:
 	glm::vec3 position;
 	glm::vec3 rotation;
+public:
+	OrientedPoint(glm::vec3 position, glm::vec3 rotation);
+	glm::vec3 getPosition();
+	glm::vec3 getRotation();
+};
+
+class GameObject : public OrientedPoint
+{
+private:
 	std::set<GameObject*> children;
 	std::set<Component*> components;
 public:
 	GameObject(glm::vec3 position, glm::vec3 rotation);
 	~GameObject();
-	virtual void update(float deltaTime);
+	void update(float deltaTime);
+	void render();
 	void move(glm::vec3 delta);
 	void rotate(glm::vec3 delta);
 	void addChild(GameObject* child);
@@ -33,13 +45,14 @@ public:
 	{
 		for (Component* component : components)
 		{
-			T* typedComponent dynamic_cast<T*>(component);
-			if (typedComponent != null)
+			T* typedComponent = dynamic_cast<T*>(component);
+			if (typedComponent != nullptr)
 				return typedComponent;
 		}
 		return nullptr;
 	}
 };
+
 
 class Component
 {
@@ -57,6 +70,6 @@ public:
 	{
 		delete gameObject;
 	}
-
 	virtual void update(float deltaTime) {}
+	virtual void render() {}
 };

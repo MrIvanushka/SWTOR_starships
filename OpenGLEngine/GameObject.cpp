@@ -1,10 +1,23 @@
 #include "GameObject.h"
 
-GameObject::GameObject(glm::vec3 position, glm::vec3 rotation)
+OrientedPoint::OrientedPoint(glm::vec3 position, glm::vec3 rotation)
 {
 	this->position = position;
 	this->rotation = rotation;
 }
+
+GameObject::GameObject(glm::vec3 position, glm::vec3 rotation) : OrientedPoint(position, rotation)
+{}
+
+glm::vec3 OrientedPoint::getPosition()
+{
+	return position;
+}
+glm::vec3 OrientedPoint::getRotation()
+{
+	return rotation;
+}
+
 GameObject::~GameObject()
 {
 	for (Component* component : components)
@@ -19,6 +32,15 @@ void GameObject::update(float deltaTime)
 	{
 		if(component->enabled)
 			component->update(deltaTime);
+	}
+}
+
+void GameObject::render()
+{
+	for (Component* component : this->components)
+	{
+		if (component->enabled)
+			component->render();
 	}
 }
 
