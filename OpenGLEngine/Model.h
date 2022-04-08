@@ -5,15 +5,15 @@
 #include"Shader.h"
 #include"Material.h"
 #include"OBJLoader.h"
+#include "GameObject.h"
 
-class Model
+class Model : public Component
 {
 private:
 	Material * material;
 	Texture* overrideTextureDiffuse;
 	Texture* overrideTextureSpecular;
 	std::vector<Mesh*> meshes;
-	glm::vec3 position;
 
 	void updateUniforms()
 	{
@@ -21,7 +21,7 @@ private:
 	}
 
 public:
-	Model(
+	void initialize(
 		glm::vec3 position, 
 		Material* material,
 		Texture* orTexDif,
