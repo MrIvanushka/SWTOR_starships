@@ -11,7 +11,6 @@ void Scene::initialize(int GL_VERSION_MAJOR, int GL_VERSION_MINOR, int frameBuff
     this->initTextures();
     this->initMaterials();
     this->initObjects();
-    this->initPointLights();
     this->initUniforms(frameBufferWidth, frameBufferHeight);
 }
 
@@ -28,9 +27,6 @@ Scene::~Scene()
 
     for (GameObject* i : this->gameObjects)
         delete i;
-
-    for (size_t i = 0; i < this->pointLights.size(); i++)
-        delete this->pointLights[i];
 }
 
 void Scene::initUniforms(int frameBufferWidth, int frameBufferHeight)

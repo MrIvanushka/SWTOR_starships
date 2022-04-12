@@ -13,7 +13,6 @@ class SpaceScene : public Scene
     void initTextures() override;
     void initMaterials() override;
     void initObjects() override;
-    void initPointLights() override;
 public:
     SpaceScene(int GL_VERSION_MAJOR, int GL_VERSION_MINOR, int framebufferWidth, int framebufferHeight);
 };

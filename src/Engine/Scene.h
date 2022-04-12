@@ -11,7 +11,7 @@
 #include"Material.h"
 #include "../Components/Camera.h"
 #include "GameObject.h"
-#include "Light.h"
+#include "../Components/Light.h"
 #include "../Components/Model.h"
 
 class Scene
@@ -29,7 +29,6 @@ private:
     virtual void initTextures() = 0;
     virtual void initMaterials() = 0;
     virtual void initObjects() = 0;
-    virtual void initPointLights() = 0;
     void initUniforms(int frameBufferWidth, int frameBufferHeight);
 public:
     ~Scene();
