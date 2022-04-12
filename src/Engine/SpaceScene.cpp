@@ -3,10 +3,11 @@
 //
 
 #include "SpaceScene.h"
+#include "../Components/MouseController.h"
 
-SpaceScene::SpaceScene(int GL_VERSION_MAJOR, int GL_VERSION_MINOR, const glm::mat4& ViewMatrix, const glm::mat4& ProjectionMatrix)
+SpaceScene::SpaceScene(int GL_VERSION_MAJOR, int GL_VERSION_MINOR, int framebufferWidth, int framebufferHeight)
 {
-    this->initialize(GL_VERSION_MAJOR, GL_VERSION_MINOR, ViewMatrix, ProjectionMatrix);
+    this->initialize(GL_VERSION_MAJOR, GL_VERSION_MINOR, framebufferWidth, framebufferHeight);
 }
 
 void SpaceScene::initShaders(int GL_VERSION_MAJOR, int GL_VERSION_MINOR)
@@ -50,8 +51,14 @@ void SpaceScene::initObjects()
 
     GameObject* valor = new GameObject(glm::vec3(3.f, 0.f, -10.f), glm::vec3(0.f, 60.f, 0.f));
     valor->addComponent<Model>();
-    valor->getComponent<Model>()->initialize(0.4f, this->materials[0], this->shaders[0], this->textures[2], this->textures[3], "../OBJFiles/Valor.obj");
+    valor->getComponent<Model>()->initialize(0.4f, this->materials[0], this->shaders[0], this->textures[2], this->textures[3], "../OBJFiles/Valor.obj", true);
     this->gameObjects.push_back(valor);
+
+    GameObject* camera = new GameObject(glm::vec3(-10.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f));
+    camera->addComponent<Camera>();
+    camera->addComponent<MouseController>();
+    this->gameObjects.push_back(camera);
+    this->renderCamera = camera->getComponent<Camera>();
 }
 
 void SpaceScene::initPointLights()

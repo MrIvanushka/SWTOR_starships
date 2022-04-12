@@ -36,10 +36,8 @@ private:
         this->ModelMatrix = glm::mat4(1.f);
         this->ModelMatrix = glm::translate(this->ModelMatrix, this->origin);
 
-        glm::vec3 rotation = this->centerPoint->getRotation();
-        this->ModelMatrix = glm::rotate(this->ModelMatrix, glm::radians(rotation.x), glm::vec3(1.f, 0.f, 0.f));
-        this->ModelMatrix = glm::rotate(this->ModelMatrix, glm::radians(rotation.y), glm::vec3(0.f, 1.f, 0.f));
-        this->ModelMatrix = glm::rotate(this->ModelMatrix, glm::radians(rotation.z), glm::vec3(0.f, 0.f, 1.f));
+        glm::quat rotation = this->centerPoint->getRotation();
+        this->ModelMatrix = mat4_cast(rotation);
 
         this->ModelMatrix = glm::translate(this->ModelMatrix, this->centerPoint->getPosition() - this->origin);
         this->ModelMatrix = glm::scale(this->ModelMatrix, this->scale);

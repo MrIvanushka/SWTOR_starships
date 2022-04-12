@@ -10,14 +10,7 @@
 #include <vector>
 #include "Scene.h"
 #include "SpaceScene.h"
-
-//ZOOOOOOOOOOOM IN BEFORE RECORDING!
-
-//ENUMERATIONS
-enum shader_enum { SHADER_CORE_PROGRAM = 0 };
-enum texture_enum { TEX_PUSHEEN = 0, TEX_PUSHEEN_SPECULAR, TEX_CONTAINER, TEX_CONTAINER_SPECULAR };
-enum material_enum { MAT_1 = 0 };
-enum mesh_enum { MESH_QUAD = 0 };
+#include "Input.h"
 
 class Game
 {
@@ -39,29 +32,6 @@ private:
     float curTime;
     float lastTime;
 
-    //Mouse Input
-    double lastMouseX;
-    double lastMouseY;
-    double mouseX;
-    double mouseY;
-    double mouseOffsetX;
-    double mouseOffsetY;
-    bool firstMouse;
-
-    //Camera
-    Camera camera;
-
-    //Matrices
-    glm::mat4 ViewMatrix;
-    glm::vec3 camPosition;
-    glm::vec3 worldUp;
-    glm::vec3 camFront;
-
-    glm::mat4 ProjectionMatrix;
-    float fov;
-    float nearPlane;
-    float farPlane;
-
     std::vector<Scene*> scenes;
     unsigned currentSceneIndex;
 
@@ -73,7 +43,6 @@ private:
     );
     void initGLEW(); //AFTER CONTEXT CREATION!!!
     void initOpenGLOptions();
-    void initMatrices();
     void initScenes();
 
     void updateUniforms();
@@ -98,9 +67,6 @@ public:
 
 //Functions
     void updateDt();
-    void updateMouseInput();
-    void updateKeyboardInput();
-    void updateInput();
     void update();
     void render();
 //Static functions

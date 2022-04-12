@@ -33,12 +33,25 @@ public:
             Shader* shader,
             Texture* orTexDif,
             Texture* orTexSpec,
-            const char* objFile
-    )
-    {
-        std::vector<Vertex> mesh = loadOBJ(objFile);
-        this->meshes.push_back(new MeshRenderer(new Mesh(mesh.data(), mesh.size(), NULL, 0, gameObject, glm::vec3(scale)),
-                                                material, shader, orTexDif, orTexSpec));
+            const char* objFile,
+            bool allowManyMeshes = false
+    ) {
+        if (allowManyMeshes == false) {
+            std::vector<Vertex> mesh = loadOBJ(objFile);
+            this->meshes.push_back(
+                    new MeshRenderer(new Mesh(mesh.data(), mesh.size(), NULL, 0, gameObject, glm::vec3(scale)),
+                                     material, shader, orTexDif, orTexSpec));
+        } else
+        {
+            std::cout << "start";
+            auto meshes = loadOBJwithManyMeshes(objFile);
+            //for(auto &mesh : meshes)
+            {
+                this->meshes.push_back(
+                        new MeshRenderer(new Mesh(meshes[0].data(), meshes[0].size(), NULL, 0, gameObject, glm::vec3(scale)),
+                                         material, shader, orTexDif, orTexSpec));
+            }
+        }
     }
 
     ~Model()

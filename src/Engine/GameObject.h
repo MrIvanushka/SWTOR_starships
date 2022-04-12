@@ -7,6 +7,7 @@
 
 #include<../../glm/glm/glm.hpp>
 #include<../../glm/glm/vec3.hpp>
+#include<../../glm/glm/gtc/quaternion.hpp>
 #include <set>
 #include <stdexcept>
 
@@ -16,11 +17,11 @@ class OrientedPoint
 {
 protected:
     glm::vec3 position;
-    glm::vec3 rotation;
+    glm::quat rotation;
 public:
     OrientedPoint(glm::vec3 position, glm::vec3 rotation);
     glm::vec3 getPosition();
-    glm::vec3 getRotation();
+    glm::quat getRotation();
 };
 
 class GameObject : public OrientedPoint
@@ -34,6 +35,7 @@ public:
     void update(float deltaTime);
     void render();
     void move(glm::vec3 delta);
+    void rotate(glm::quat delta);
     void rotate(glm::vec3 delta);
     void addChild(GameObject* child);
     void removeChild(GameObject* child);
