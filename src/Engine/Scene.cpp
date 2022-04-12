@@ -5,14 +5,13 @@
 #include "Scene.h"
 #include "Game.h"
 
-void Scene::initialize(int GL_VERSION_MAJOR, int GL_VERSION_MINOR, const glm::mat4& ViewMatrix, const glm::mat4& ProjectionMatrix)
+void Scene::initialize(int GL_VERSION_MAJOR, int GL_VERSION_MINOR, int frameBufferWidth, int frameBufferHeight)
 {
     this->initShaders(GL_VERSION_MAJOR, GL_VERSION_MINOR);
     this->initTextures();
     this->initMaterials();
     this->initObjects();
-    this->initPointLights();
-    this->initUniforms(ViewMatrix, ProjectionMatrix);
+    this->initUniforms(frameBufferWidth, frameBufferHeight);
 }
 
 Scene::~Scene()
@@ -28,13 +27,13 @@ Scene::~Scene()
 
     for (GameObject* i : this->gameObjects)
         delete i;
-
-    for (size_t i = 0; i < this->pointLights.size(); i++)
-        delete this->pointLights[i];
 }
 
-void Scene::initUniforms(const glm::mat4& ViewMatrix, const glm::mat4& ProjectionMatrix)
+void Scene::initUniforms(int frameBufferWidth, int frameBufferHeight)
 {
+    auto ViewMatrix = renderCamera->getViewMatrix();
+    auto ProjectionMatrix = renderCamera->getProjectionMatrix(frameBufferWidth, frameBufferHeight);
+
     for (Shader * shader : this->shaders)
     {
         shader->setMat4fv(ViewMatrix, "ViewMatrix");
@@ -47,8 +46,12 @@ void Scene::initUniforms(const glm::mat4& ViewMatrix, const glm::mat4& Projectio
     }
 }
 
-void Scene::updateUniforms(const glm::mat4& ViewMatrix, const glm::mat4& ProjectionMatrix, const glm::vec3 cameraPos)
+void Scene::updateUniforms(int framebufferWidth, int framebufferHeight)
 {
+    auto ViewMatrix = renderCamera->getViewMatrix();
+    auto ProjectionMatrix = renderCamera->getProjectionMatrix(framebufferWidth, framebufferHeight);
+    auto cameraPos = renderCamera->getPosition();
+
     for (Shader* shader : this->shaders)
     {
         shader->setMat4fv(ViewMatrix, "ViewMatrix");
@@ -77,4 +80,8 @@ void Scene::render()
     {
         object->render();
     }
+}
+
+Camera* Scene::getCamera() {
+    return this->renderCamera;
 }

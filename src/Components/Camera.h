@@ -14,32 +14,32 @@
 #include "../../glm/glm/vec3.hpp"
 #include<../../glm/glm/mat4x4.hpp>
 #include<../../glm/glm/gtc/matrix_transform.hpp>
+#include<../../glm/glm/gtx/euler_angles.hpp>
+
+#include "../Engine/GameObject.h"
 
 enum direction {FORWARD = 0, BACKWARD, LEFT, RIGHT};
 
-class Camera
-{
+class Camera : public Component {
 private:
     glm::mat4 ViewMatrix;
-
-    GLfloat movementSpeed;
-    GLfloat sensitivity;
+    glm::mat4 ProjectionMatrix;
 
     glm::vec3 worldUp;
-    glm::vec3 position;
     glm::vec3 front;
     glm::vec3 right;
     glm::vec3 up;
 
-    GLfloat pitch;
-    GLfloat yaw;
-    GLfloat roll;
+    float fov;
+    float nearPlane;
+    float farPlane;
 
-    void updateCameraVectors()
-    {
-        this->front.x = cos(glm::radians(this->yaw)) * cos(glm::radians(this->pitch));
-        this->front.y = sin(glm::radians(this->pitch));
-        this->front.z = sin(glm::radians(this->yaw)) * cos(glm::radians(this->pitch));
+    void updateCameraVectors() {
+        auto rotation = this->gameObject->getRotation();
+        rotation.x *= -1;
+        rotation.y *= -1;
+        rotation.z *= -1;
+        this->front = glm::vec3(1, 0, 0) * rotation;
 
         this->front = glm::normalize(this->front);
         this->right = glm::normalize(glm::cross(this->front, this->worldUp));
@@ -47,21 +47,16 @@ private:
     }
 
 public:
-    Camera(glm::vec3 position, glm::vec3 direction, glm::vec3 worldUp)
-    {
+    Camera(GameObject *object) : Component(object) {
         this->ViewMatrix = glm::mat4(1.f);
 
-        this->movementSpeed = 3.f;
-        this->sensitivity = 5.f;
-
-        this->worldUp = worldUp;
-        this->position = position;
+        this->worldUp = glm::vec3(0.f, 1.f, 0.f);;
         this->right = glm::vec3(0.f);
         this->up = worldUp;
 
-        this->pitch = 0.f;
-        this->yaw = -90.f;
-        this->roll = 0.f;
+        this->fov = 90.f;
+        this->nearPlane = 0.1f;
+        this->farPlane = 1000.f;
 
         this->updateCameraVectors();
     }
@@ -69,63 +64,30 @@ public:
     ~Camera() {}
 
     //Accessors
-    const glm::mat4 getViewMatrix()
-    {
+    const glm::mat4 getViewMatrix() {
         this->updateCameraVectors();
 
-        this->ViewMatrix = glm::lookAt(this->position, this->position + this->front, this->up);
-
+        auto position = this->gameObject->getPosition();
+        this->ViewMatrix = glm::lookAt(position, position + this->front, this->up);
         return this->ViewMatrix;
     }
 
-    const glm::vec3 getPosition() const
+    glm::mat4 getProjectionMatrix(int framebufferWidth, int framebufferHeight)
     {
-        return this->position;
+        this->ProjectionMatrix = glm::mat4(1.f);
+        this->ProjectionMatrix = glm::perspective(
+                glm::radians(this->fov),
+                static_cast<float>(framebufferWidth) / framebufferHeight,
+                this->nearPlane,
+                this->farPlane
+        );
+        return ProjectionMatrix;
     }
 
-    //Functions
-    void move(const float& dt, const int direction)
+    glm::vec3 getPosition()
     {
-        //Update position vector
-        switch (direction)
-        {
-            case FORWARD:
-                this->position += this->front * this->movementSpeed * dt;
-                break;
-            case BACKWARD:
-                this->position -= this->front * this->movementSpeed * dt;
-                break;
-            case LEFT:
-                this->position -= this->right * this->movementSpeed * dt;
-                break;
-            case RIGHT:
-                this->position += this->right * this->movementSpeed * dt;
-                break;
-            default:
-                break;
-        }
+        return this->gameObject->getPosition();
     }
-
-    void updateMouseInput(const float& dt, const double& offsetX, const double& offsetY)
-    {
-        //Update pitch yaw and roll
-        this->pitch += static_cast<GLfloat>(offsetY) * this->sensitivity * dt;
-        this->yaw += static_cast<GLfloat>(offsetX) * this->sensitivity * dt;
-
-        if (this->pitch > 80.f)
-            this->pitch = 80.f;
-        else if (this->pitch < -80.f)
-            this->pitch = -80.f;
-
-        if (this->yaw > 360.f || this->yaw < -360.f)
-            this->yaw = 0.f;
-    }
-
-    void updateInput(const float& dt, const int direction, const double& offsetX, const double& offsetY)
-    {
-        this->updateMouseInput(dt, offsetX, offsetY);
-    }
-
 };
 
 #endif //SWTOR_CAMERA_H

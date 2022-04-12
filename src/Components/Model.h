@@ -9,7 +9,6 @@
 #include"../Engine/Texture.h"
 #include"../Engine/Shader.h"
 #include"../Engine/Material.h"
-#include"../Engine/OBJLoader.h"
 #include "../Engine/GameObject.h"
 #include "../Engine/MeshRenderer.h"
 
@@ -21,24 +20,17 @@ public:
     Model(GameObject* object) : Component(object)
     {}
 
-    void initialize(std::vector<MeshRenderer*> meshes)
-    {
-        this->meshes = meshes;
-    }
-
-    //OBJ file loaded model
-    void initialize(
+    void addMesh(
+            std::vector<Vertex> mesh,
             float scale,
             Material* material,
             Shader* shader,
             Texture* orTexDif,
-            Texture* orTexSpec,
-            const char* objFile
-    )
-    {
-        std::vector<Vertex> mesh = loadOBJ(objFile);
-        this->meshes.push_back(new MeshRenderer(new Mesh(mesh.data(), mesh.size(), NULL, 0, gameObject, glm::vec3(scale)),
-                                                material, shader, orTexDif, orTexSpec));
+            Texture* orTexSpec
+    ) {
+            this->meshes.push_back(
+                    new MeshRenderer(new Mesh(mesh.data(), mesh.size(), NULL, 0, gameObject, glm::vec3(scale)),
+                                     material, shader, orTexDif, orTexSpec));
     }
 
     ~Model()

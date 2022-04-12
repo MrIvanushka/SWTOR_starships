@@ -7,7 +7,7 @@
 OrientedPoint::OrientedPoint(glm::vec3 position, glm::vec3 rotation)
 {
     this->position = position;
-    this->rotation = rotation;
+    this->rotation = glm::quat(rotation);
 }
 
 GameObject::GameObject(glm::vec3 position, glm::vec3 rotation) : OrientedPoint(position, rotation)
@@ -17,7 +17,7 @@ glm::vec3 OrientedPoint::getPosition()
 {
     return position;
 }
-glm::vec3 OrientedPoint::getRotation()
+glm::quat OrientedPoint::getRotation()
 {
     return rotation;
 }
@@ -56,14 +56,16 @@ void GameObject::move(glm::vec3 delta)
     }
     this->position += delta;
 }
-
-void GameObject::rotate(glm::vec3 delta)
-{
-    for (GameObject* child : this->children)
-    {
+void GameObject::rotate(glm::quat delta) {
+    for (GameObject *child: this->children) {
         child->rotate(delta);
-        //+rotate around center point
+        //child->move((child->position- this->position) * delta - child->position + this->position);
     }
+    rotation = delta * rotation;
+}
+
+void GameObject::rotate(glm::vec3 delta) {
+    rotate(glm::quat(delta));
 }
 
 void GameObject::addChild(GameObject* newChild)

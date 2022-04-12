@@ -13,9 +13,8 @@ class SpaceScene : public Scene
     void initTextures() override;
     void initMaterials() override;
     void initObjects() override;
-    void initPointLights() override;
 public:
-    SpaceScene(int GL_VERSION_MAJOR, int GL_VERSION_MINOR, const glm::mat4& ViewMatrix, const glm::mat4& ProjectionMatrix);
+    SpaceScene(int GL_VERSION_MAJOR, int GL_VERSION_MINOR, int framebufferWidth, int framebufferHeight);
 };
 
 #endif //SWTOR_SPACESCENE_H
