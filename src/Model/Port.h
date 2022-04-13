@@ -4,7 +4,8 @@
 #pragma once
 #include "StarFighter.h"
 #include "Transformable.h"
-class Port :public Transformable
+#include "Damageable.h"
+class Port :public Transformable, protected Damageable
 {
 public:
 	Port() {}
@@ -14,11 +15,6 @@ public:
 	~Port() {}
 
 	//Spawn method
-	void spawn(StarFighter* toRespawn);
-
-	//getMethod
-	bool isAlive();
-protected:
-	bool alive;
+	void spawn(StarFighter * toRespawn);
 };
 
