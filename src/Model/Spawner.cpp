@@ -16,7 +16,7 @@ void Spawner::update(float dt)
 			respawnQueue.pop();
 			this->estimatedTime = 0;
 		}
-		//Protection from spawning right after death
+		//Protection from spawning 
 		else 
 		{
 			this->estimatedTime = 0;
@@ -36,7 +36,7 @@ void Spawner::destroyPort(Port* toDelete)
 	delete this->ports[index];
 }
 
-void Spawner::destroyShip(StarFighter* toDestroy)
+void Spawner::addDestroyedShip(StarFighter* toDestroy)
 {
 	this->respawnQueue.push(toDestroy);
 	this->aliveQueue->destroyShip(toDestroy);

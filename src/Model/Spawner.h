@@ -50,7 +50,7 @@ public:
 
 	void destroyPort(Port* toDelete);
 
-	void destroyShip(StarFighter* toDestroy);
+	void addDestroyedShip(StarFighter* toDestroy);
 
 protected:
 

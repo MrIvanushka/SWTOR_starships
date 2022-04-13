@@ -1,10 +1,10 @@
 #pragma once
 class Damageable
 {
-protected:
 	void takeDamage(float damage);
-	void die();
 	bool isAlive();
+protected:
+	void die();
 	float hp;
 	bool alive;
 };

@@ -5,7 +5,7 @@
 #include "StarFighter.h"
 #include "Transformable.h"
 #include "Damageable.h"
-class Port :public Transformable, protected Damageable
+class Port :public Transformable, public Damageable
 {
 public:
 	Port() {}
