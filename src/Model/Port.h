@@ -1,5 +1,5 @@
 //Saves coordinates in which new ships spawns
-//spawnMethod - spawns new ship at this port coordinates
+//spawnMethod - spawns new ship at this Port coordinates
 
 #pragma once
 #include "StarFighter.h"
@@ -7,9 +7,7 @@
 class Port :public Transformable
 {
 public:
-	Port() {
-		this->position = Vector3(0, 0, 0);
-	}
+	Port() {}
 	Port(Vector3 coord) {
 		this->position = coord;
 	}
@@ -18,12 +16,8 @@ public:
 	//Spawn method
 	void spawn(StarFighter* toRespawn);
 
-	//setMethod
-	void setPosition(Vector3 n_coord);
-	void setAlive(bool alive);
-
 	//getMethod
-	bool getAlive();
+	bool isAlive();
 protected:
 	bool alive;
 };
