@@ -3,7 +3,9 @@
 //
 
 #include "SpaceScene.h"
-#include "../Components/MouseController.h"
+#include "../Components/ShipMovementController.h"
+#include "../Components/Presenter.h"
+#include "../Model/Starship.h"
 #include"OBJLoader.h"
 
 SpaceScene::SpaceScene(int GL_VERSION_MAJOR, int GL_VERSION_MINOR, int framebufferWidth, int framebufferHeight)
@@ -63,7 +65,8 @@ void SpaceScene::initTextures()
     this->textures.push_back(new Texture("../Images/Valor/veh_rep_capital_ship_trims01_d2.png", GL_TEXTURE_2D));
 
     this->textures.push_back(new Texture("../Images/Valor/veh_rep_capital_ship_trims01_n.png", GL_TEXTURE_2D));
-    //this->textures.push_back(new Texture("../Images/Harrower/trims01_n.png", GL_TEXTURE_2D));
+
+    this->textures.push_back(new Texture("../Images/liberator.png", GL_TEXTURE_2D));
 }
 
 void SpaceScene::initMaterials()
@@ -108,9 +111,19 @@ void SpaceScene::initObjects()
 
     GameObject* camera = new GameObject(glm::vec3(-10.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f));
     camera->addComponent<Camera>();
-    camera->addComponent<MouseController>();
+    Starship* shipModel = new Starship(glm::vec3(-10.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f));
+    camera->addComponent<ShipMovementController>();
+    camera->addComponent<Presenter>();
+    camera->getComponent<ShipMovementController>()->initialize(shipModel);
+    camera->getComponent<Presenter>()->initialize(shipModel);
     this->gameObjects.push_back(camera);
     this->renderCamera = camera->getComponent<Camera>();
+
+    GameObject* liberator = new GameObject(glm::vec3(-7.f, 0.f, 0.f), glm::vec3(-20.f, 10.f, 0.f));
+    liberator->addComponent<Model>();
+    mesh = loadOBJ("../OBJFiles/Liberator.obj");
+    liberator->getComponent<Model>()->addMesh(mesh, 0.4f, this->materials[0], this->shaders[0], this->textures[27], this->textures[0]);
+    this->gameObjects.push_back(liberator);
 
     GameObject* direcionalLight = new GameObject(glm::vec3(-50.f, 50.f, 50.f), glm::vec3(0.f, 0.f, 0.f));
     direcionalLight->addComponent<PointLight>();

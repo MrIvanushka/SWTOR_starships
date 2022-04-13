@@ -37,6 +37,9 @@ public:
     void move(glm::vec3 delta);
     void rotate(glm::quat delta);
     void rotate(glm::vec3 delta);
+    void moveAt(glm::vec3 delta);
+    void rotateAt(glm::quat delta);
+    void rotateAt(glm::vec3 delta);
     void addChild(GameObject* child);
     void removeChild(GameObject* child);
 

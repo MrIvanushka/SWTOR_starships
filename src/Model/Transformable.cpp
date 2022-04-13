@@ -1,73 +1,53 @@
 #include "Transformable.h"
-Transformable::Transformable(Vector3 position, Vector3 direction, Vector3 worldUp, Vector3 rotation)
+Transformable::Transformable(glm::vec3 position, glm::vec3 rotation)
 {
-	this->movementSpeed = 0.f;
-
-	this->rotation = rotation;
-	this->worldUp = worldUp;
+	this->rotation = glm::quat(rotation);
 	this->position = position;
-	this->front = direction;
-	this->right.setCoord(0, 0, 0);
-	this->up = worldUp;
-
-	this->pitch = 0.f;
-	this->yaw = -90.f;
-	this->roll = 0.f;
 }
 
-inline void Transformable::rotate(Vector3 delta)
+void Transformable::rotate(glm::vec3 delta)
 {
-	Vector3 x(1, 0, 0);
-	Vector3 y(0, 1, 0);
-	Vector3 z(0, 0, 1);
-
-	this->rotation = delta + this->rotation;
-	this->pitch = 90 - z.angle(rotation);
-	this->yaw = y.angle(this->rotation * cos(pitch));
-
-	if (this->pitch >= 360) this->pitch -= 360;
-	if (this->yaw >= 360) this->yaw -= 360;
-	this->updateVectors();
+    rotate(glm::quat(rotation));
 }
 
-inline void Transformable::move(Vector3 n_coord)
+void Transformable::rotate(glm::quat delta)
 {
-	this->position = n_coord;
+    this->rotation = delta * this->rotation;
+    this->front = glm::vec3(1, 0, 0) * rotation;
 }
 
-inline Vector3 Transformable::getPosition()
+void Transformable::rotateAt(glm::vec3 newRot)
+{
+    rotateAt(glm::quat(newRot));
+}
+
+void Transformable::rotateAt(glm::quat newRot)
+{
+    this->rotation = newRot;
+    this->front = glm::vec3(1, 0, 0) * newRot;
+}
+
+void Transformable::move(glm::vec3 delta)
+{
+	this->position += delta;
+}
+
+void Transformable::moveAt(glm::vec3 newPos)
+{
+    this->position = newPos;
+}
+
+glm::vec3 Transformable::getPosition()
 {
 	return this->position;
 }
 
-inline Vector3 Transformable::getRotation()
+glm::quat Transformable::getRotation()
 {
 	return this->rotation;
 }
 
-inline Vector3 Transformable::getFront()
+glm::vec3 Transformable::getFront()
 {
 	return this->front;
-}
-
-inline Vector3 Transformable::getAngles()
-{
-	return Vector3(this->pitch, this->yaw, this->roll);
-}
-
-inline float Transformable::radians(const float angle)
-{
-	float rads = 2 * M_PI * angle / 360;
-	return rads;
-}
-
-inline void Transformable::updateVectors()
-{
-	this->front.x = cos(radians(this->yaw)) * cos(radians(this->pitch));
-	this->front.y = sin(radians(this->pitch));
-	this->front.z = sin(radians(this->yaw)) * cos(radians(this->pitch));
-
-	this->front.normalize();
-	this->right = (this->front.cross(this->worldUp)).normalize();
-	this->up = (this->right.cross(this->front)).normalize();
 }

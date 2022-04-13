@@ -56,16 +56,38 @@ void GameObject::move(glm::vec3 delta)
     }
     this->position += delta;
 }
+
 void GameObject::rotate(glm::quat delta) {
     for (GameObject *child: this->children) {
         child->rotate(delta);
         //child->move((child->position- this->position) * delta - child->position + this->position);
     }
-    rotation = delta * rotation;
+    rotation = rotation * delta;
 }
 
 void GameObject::rotate(glm::vec3 delta) {
     rotate(glm::quat(delta));
+}
+
+void GameObject::moveAt(glm::vec3 delta)
+{
+    for (GameObject* child : this->children)
+    {
+        child->move(delta);
+    }
+    this->position = delta;
+}
+
+void GameObject::rotateAt(glm::quat newRot) {
+    for (GameObject *child: this->children) {
+        child->rotateAt(newRot);
+        //child->move((child->position- this->position) * delta - child->position + this->position);
+    }
+    rotation = newRot;
+}
+
+void GameObject::rotateAt(glm::vec3 newRot) {
+    rotate(glm::quat(newRot));
 }
 
 void GameObject::addChild(GameObject* newChild)

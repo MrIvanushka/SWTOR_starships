@@ -29,7 +29,7 @@
 
 //Own libs
 #include"Vertex.h"
-#include"list"
+
 static std::vector<Vertex> loadOBJ(const char* file_name)
 {
     //Vertex portions
@@ -145,18 +145,11 @@ static std::vector<Vertex> loadOBJ(const char* file_name)
         vertices[i].normal = vertex_normals[vertex_normal_indicies[i] - 1];
         vertices[i].color = glm::vec3(1.f, 1.f, 1.f);
     }
-
-    //DEBUG
-    std::cout << "Nr of vertices: " << vertices.size() << "\n";
-
-    //Loaded success
-    std::cout << "OBJ file loaded!" << "\n";
     return vertices;
 }
 
 static std::vector<std::vector<Vertex>> loadOBJwithManyMeshes(const char* file_name)
 {
-    std::cout << "start";
     //Vertex portions
     std::vector<glm::fvec3> vertex_positions;
     std::vector<glm::fvec2> vertex_texcoords;
@@ -185,7 +178,6 @@ static std::vector<std::vector<Vertex>> loadOBJwithManyMeshes(const char* file_n
         throw "ERROR::OBJLOADER::Could not open file.";
     }
 
-    std::cout << "start";
     //Read one line at a time
     while (std::getline(in_file, line))
     {
@@ -230,9 +222,6 @@ static std::vector<std::vector<Vertex>> loadOBJwithManyMeshes(const char* file_n
         }
         else if (prefix == "f")
         {
-            if(current_index == -1)
-                std::cout<<"Something is wrong";
-
             int counter = 0;
             while (ss >> temp_glint)
             {
@@ -266,7 +255,6 @@ static std::vector<std::vector<Vertex>> loadOBJwithManyMeshes(const char* file_n
 
         }
     }
-    std::cout << "OK1";
 
     vertices.resize(current_index+1, std::vector<Vertex>());
     for(int i = 0; i <= current_index; i++) {
@@ -281,7 +269,6 @@ static std::vector<std::vector<Vertex>> loadOBJwithManyMeshes(const char* file_n
             vertices[i][j].color = glm::vec3(1.f, 1.f, 1.f);
         }
     }
-    std::cout << "OK";
 
     return vertices;
 }
