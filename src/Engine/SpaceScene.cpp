@@ -5,6 +5,7 @@
 #include "SpaceScene.h"
 #include "../Components/ShipMovementController.h"
 #include "../Components/Presenter.h"
+#include "../Components/Follower.h"
 #include "../Model/Starship.h"
 #include"OBJLoader.h"
 
@@ -95,7 +96,7 @@ void SpaceScene::initObjects()
     harrower->getComponent<Model>()->addMesh(mesh, 0.2f, this->materials[0], this->shaders[0], this->textures[13], this->textures[14]);
     this->gameObjects.push_back(harrower);
 
-    GameObject* valor = new GameObject(glm::vec3(3.f, 0.f, -10.f), glm::vec3(0.f, 60.f, 0.f));
+    GameObject* valor = new GameObject(glm::vec3(3.f, 0.f, -10.f), glm::vec3(0.f, 240.f, 0.f));
     valor->addComponent<Model>();
 
     auto meshes = loadOBJwithManyMeshes("../OBJFiles/Valor.obj");
@@ -109,20 +110,22 @@ void SpaceScene::initObjects()
     std::cout << "SIZE = " << meshes.size() << std::endl;
     this->gameObjects.push_back(valor);
 
-    GameObject* camera = new GameObject(glm::vec3(-10.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f));
+    GameObject* camera = new GameObject(glm::vec3(-10.f, 0.f, 0.f), glm::vec3(0.f, -90.f, 0.f));
     camera->addComponent<Camera>();
-    Starship* shipModel = new Starship(glm::vec3(-10.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f));
-    camera->addComponent<ShipMovementController>();
-    camera->addComponent<Presenter>();
-    camera->getComponent<ShipMovementController>()->initialize(shipModel);
-    camera->getComponent<Presenter>()->initialize(shipModel);
+    Starship* shipModel = new Starship(glm::vec3(-9.f, 0.05f, 0.f), glm::vec3(0.f, -90.f, 0.f));
     this->gameObjects.push_back(camera);
     this->renderCamera = camera->getComponent<Camera>();
 
-    GameObject* liberator = new GameObject(glm::vec3(-7.f, 0.f, 0.f), glm::vec3(-20.f, 10.f, 0.f));
+    GameObject* liberator = new GameObject(glm::vec3(-9.4f, -0.05f, 0.f), glm::vec3(0.f, 90.f, 0.f));
     liberator->addComponent<Model>();
     mesh = loadOBJ("../OBJFiles/Liberator.obj");
-    liberator->getComponent<Model>()->addMesh(mesh, 0.4f, this->materials[0], this->shaders[0], this->textures[27], this->textures[0]);
+    liberator->getComponent<Model>()->addMesh(mesh, 0.1f, this->materials[0], this->shaders[0], this->textures[27], this->textures[0]);
+    liberator->addComponent<ShipMovementController>();
+    liberator->addComponent<Presenter>();
+    liberator->getComponent<ShipMovementController>()->initialize(shipModel);
+    liberator->getComponent<Presenter>()->initialize(shipModel);
+    camera->addComponent<Follower>();
+    camera->getComponent<Follower>()->initialize(liberator, glm::vec3(0, -0.05, 0.5f));
     this->gameObjects.push_back(liberator);
 
     GameObject* direcionalLight = new GameObject(glm::vec3(-50.f, 50.f, 50.f), glm::vec3(0.f, 0.f, 0.f));

@@ -14,14 +14,6 @@ class ShipMovementController : public Component
 private:
     Starship* model;
     glm::vec2 lastMousePos;
-
-    void clamp(float* angle, float min, float max)
-    {
-        if(*angle < min)
-            *angle += min;
-        if(*angle > max)
-            *angle += max;
-    }
 public:
     ShipMovementController(GameObject* object) : Component(object)
     {
@@ -36,15 +28,23 @@ public:
     void update(float deltaTime) override
     {
         glm::vec2 mousePos = Input::getInstance()->getMousePosition();
-        clamp(&mousePos.x, -360, 360);
-        clamp(&mousePos.y, -360, 360);
         glm::vec2 mouseOffset = mousePos - lastMousePos;
         lastMousePos =  mousePos;
 
-        glm::quat xQuaternion = glm::angleAxis(mouseOffset.x, glm::vec3(0, -1, 0));
-        glm::quat yQuaternion = glm::angleAxis(mouseOffset.y, glm::vec3(0, 0, -1));
+        glm::quat xQuaternion = glm::angleAxis(mouseOffset.x, glm::vec3(0, 1, 0));
+        glm::quat yQuaternion = glm::angleAxis(mouseOffset.y, glm::cross(model->getFront(), glm::vec3(0, 1, 0)));
 
         this->model->veer(xQuaternion * yQuaternion);
+
+        if(Input::getInstance()->keyIsPressed("W"))
+            this->model->accelerate();
+        else if(Input::getInstance()->keyIsPressed("S"))
+            this->model->slowDown();
+
+        if(Input::getInstance()->keyIsPressed("D"))
+            this->model->bendRight();
+        if(Input::getInstance()->keyIsPressed("A"))
+            this->model->bendLeft();
     }
 };
 

@@ -36,10 +36,7 @@ private:
 
     void updateCameraVectors() {
         auto rotation = this->gameObject->getRotation();
-        rotation.x *= -1;
-        rotation.y *= -1;
-        rotation.z *= -1;
-        this->front = glm::vec3(1, 0, 0) * rotation;
+        this->front = glm::vec3(0, 0, 1) * rotation;
 
         this->front = glm::normalize(this->front);
         this->right = glm::normalize(glm::cross(this->front, this->worldUp));

@@ -1,8 +1,9 @@
 #include "Transformable.h"
 Transformable::Transformable(glm::vec3 position, glm::vec3 rotation)
 {
-	this->rotation = glm::quat(rotation);
+	this->rotation = glm::quat(rotation * (3.1415f / 180.f));
 	this->position = position;
+    this->front = glm::vec3(0, 0, 1) * this->rotation;
 }
 
 void Transformable::rotate(glm::vec3 delta)
@@ -12,8 +13,8 @@ void Transformable::rotate(glm::vec3 delta)
 
 void Transformable::rotate(glm::quat delta)
 {
-    this->rotation = delta * this->rotation;
-    this->front = glm::vec3(1, 0, 0) * rotation;
+    this->rotation = this->rotation * delta;
+    this->front = glm::vec3(0, 0, 1) * this->rotation;
 }
 
 void Transformable::rotateAt(glm::vec3 newRot)
@@ -24,7 +25,7 @@ void Transformable::rotateAt(glm::vec3 newRot)
 void Transformable::rotateAt(glm::quat newRot)
 {
     this->rotation = newRot;
-    this->front = glm::vec3(1, 0, 0) * newRot;
+    this->front = glm::vec3(0, 0, 1) * this->rotation;
 }
 
 void Transformable::move(glm::vec3 delta)

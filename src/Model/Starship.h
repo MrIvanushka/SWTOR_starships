@@ -11,11 +11,12 @@
 class Starship : public Transformable
 {
 private:
-    float maxSpeed = 1;
+    float maxSpeed = 10;
     float currentSpeed = 0;
     float engineSpeed = 0;
-    float acceleration = 0.5;
-    float rotationSpeed = 0.8;
+    float acceleration = 0.01;
+    float rotationSpeed = 1.f / maxSpeed;
+    float normalizingSpeed = 0.5f;
     glm::vec3 velocity = glm::vec3(0, 0, 0);
     glm::quat targetRotation;
 public:
@@ -24,6 +25,8 @@ public:
     void accelerate();
     void slowDown();
     void veer(glm::quat delta);
+    void bendRight();
+    void bendLeft();
 };
 
 #endif //SWTOR_STARSHIP_H
