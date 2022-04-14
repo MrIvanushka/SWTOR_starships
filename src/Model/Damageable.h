@@ -1,9 +1,10 @@
 #pragma once
 class Damageable
 {
+public:
 	void takeDamage(float damage);
 	bool isAlive();
-protected:
+private:
 	void die();
 	float hp;
 	bool alive;
