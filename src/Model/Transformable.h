@@ -1,37 +1,32 @@
-#pragma once
-#include "Vector.h"
-class Transformable
+#ifndef SWTOR_TRANSFORMABLE_H
+#define SWTOR_TRANSFORMABLE_H
+
+#include "../../glm/glm/vec3.hpp"
+#include "../../glm/glm/gtc/quaternion.hpp"
+#include "IUpdatable.h"
+
+class Transformable : public IUpdatable
 {
 public:
-	//Constructors
-	Transformable(Vector3 position, Vector3 direction, Vector3 worldUp, Vector3 rotation);
-	~Transformable() {};
+	Transformable(glm::vec3 position, glm::vec3 rotation);
+    Transformable(glm::vec3 position, glm::quat rotation);
 
-	//getMethods
-	Vector3 getPosition();
-	Vector3 getRotation();
-	Vector3 getFront();
-	Vector3 getAngles();
+	glm::vec3 getPosition();
+    glm::quat getRotation();
+    glm::vec3 getFront();
 
 protected:
-	float movementSpeed;
+	void rotateAt(glm::vec3 rotation);
+    void rotateAt(glm::quat rotation);
+    void rotate(glm::vec3 delta);
+    void rotate(glm::quat delta);
+	void moveAt(glm::vec3 newPos);
+    void move(glm::vec3 delta);
+private:
+    glm::vec3 position;
+    glm::quat rotation;
+    glm::vec3 front;
 
-	Vector3 worldUp;
-	Vector3 position;
-	Vector3 rotation;
-	Vector3 front;
-	Vector3 right;
-	Vector3 up;
-
-	float pitch;
-	float yaw;
-	float roll;
-
-	//Additional methods
-	float radians(const float angle);
-
-	//Movement
-	void rotate(Vector3 delta);
-	void move(Vector3 n_coord);
-	void updateVectors();
 };
+
+#endif //SWTOR_TRANSFORMABLE_H
