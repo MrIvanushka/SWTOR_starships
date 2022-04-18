@@ -27,7 +27,7 @@ public:
 class GameObject : public OrientedPoint
 {
 private:
-    std::set<GameObject*> children;
+    bool isActive = true;
     std::set<Component*> components;
 public:
     GameObject(glm::vec3 position, glm::vec3 rotation);
@@ -40,8 +40,8 @@ public:
     void moveAt(glm::vec3 delta);
     void rotateAt(glm::quat delta);
     void rotateAt(glm::vec3 delta);
-    void addChild(GameObject* child);
-    void removeChild(GameObject* child);
+    void setActive(bool value);
+    bool activeSelf();
 
     template<typename T>
     void addComponent()

@@ -9,6 +9,7 @@ class Transformable : public IUpdatable
 {
 public:
 	Transformable(glm::vec3 position, glm::vec3 rotation);
+    Transformable(glm::vec3 position, glm::quat rotation);
 
 	glm::vec3 getPosition();
     glm::quat getRotation();

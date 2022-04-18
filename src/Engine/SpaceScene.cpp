@@ -3,7 +3,9 @@
 //
 
 #include "SpaceScene.h"
-#include "../Components/ShipMovementController.h"
+#include "../Components/PlayerMovementController.h"
+#include "../Components/PlayerShootingController.h"
+#include "../Components/ShootingHandler.h"
 #include "../Components/Presenter.h"
 #include "../Components/Follower.h"
 #include "../Model/Starship.h"
@@ -68,6 +70,8 @@ void SpaceScene::initTextures()
     this->textures.push_back(new Texture("../Images/Valor/veh_rep_capital_ship_trims01_n.png", GL_TEXTURE_2D));
 
     this->textures.push_back(new Texture("../Images/liberator.png", GL_TEXTURE_2D));
+
+    this->textures.push_back(new Texture("../Images/red.png", GL_TEXTURE_2D));
 }
 
 void SpaceScene::initMaterials()
@@ -120,13 +124,36 @@ void SpaceScene::initObjects()
     liberator->addComponent<Model>();
     mesh = loadOBJ("../OBJFiles/Liberator.obj");
     liberator->getComponent<Model>()->addMesh(mesh, 0.1f, this->materials[0], this->shaders[0], this->textures[27], this->textures[0]);
-    liberator->addComponent<ShipMovementController>();
+    liberator->addComponent<PlayerMovementController>();
     liberator->addComponent<Presenter>();
-    liberator->getComponent<ShipMovementController>()->initialize(shipModel);
+    liberator->getComponent<PlayerMovementController>()->initialize(shipModel);
     liberator->getComponent<Presenter>()->initialize(shipModel);
+    liberator->addComponent<ShootingHandler>();
+
+    mesh = loadOBJ("../OBJFiles/Bullet.obj");
+    std::queue<BulletPresenter*> bullets;
+    for(int i = 0; i < 20; i++)
+    {
+        GameObject* bullet = new GameObject(glm::vec3(-8.75f, -0.01f, -0.265f), glm::vec3(0.f, 90.f, 0.f));
+        bullet->addComponent<Model>();
+        bullet->getComponent<Model>()->addMesh(mesh, 0.1f, this->materials[0], this->shaders[1], this->textures[28], this->textures[4]);
+        bullet->addComponent<BulletPresenter>();
+        bullet->getComponent<BulletPresenter>()->initialize(new Bullet(glm::vec3(-50.f, 50.f, 50.f), glm::vec3(0.f, 0.f, 0.f)));
+        bullet->setActive(false);
+        bullets.push(bullet->getComponent<BulletPresenter>());
+        this->gameObjects.push_back(bullet);
+    }
+    liberator->getComponent<ShootingHandler>()->initialize(bullets);
+    liberator->addComponent<PlayerShootingController>();
+    Weapon* liberatorWeapon = new Weapon(shipModel, glm::vec3(0.65, -0.2, 0.5), glm::vec3(0, 0, 0));
+    liberatorWeapon->Attach(liberator->getComponent<ShootingHandler>());
+    liberator->getComponent<PlayerShootingController>()->initialize(liberatorWeapon);
+
     camera->addComponent<Follower>();
     camera->getComponent<Follower>()->initialize(liberator, glm::vec3(0, -0.05, 0.5f));
     this->gameObjects.push_back(liberator);
+
+
 
     GameObject* direcionalLight = new GameObject(glm::vec3(-50.f, 50.f, 50.f), glm::vec3(0.f, 0.f, 0.f));
     direcionalLight->addComponent<PointLight>();

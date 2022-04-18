@@ -19,6 +19,9 @@ private:
     float normalizingSpeed = 0.5f;
     glm::vec3 velocity = glm::vec3(0, 0, 0);
     glm::quat targetRotation;
+
+    void normalize(float deltaTie);
+    void moveForward(float deltaTie);
 public:
     Starship(glm::vec3 position, glm::vec3 rotation);
     void update(float deltaTime) override;
