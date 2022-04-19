@@ -11,9 +11,12 @@ class Bullet : public Transformable
 {
 private:
     float damage;
+    glm::vec3 position = glm::vec3(0, 0, 0);
 public:
     Bullet(glm::vec3 position, glm::vec3 direction);
+
     void update(float deltaTime) override;
+
     void getDamage();
 };
 
