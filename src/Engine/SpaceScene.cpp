@@ -84,19 +84,25 @@ void SpaceScene::initObjects()
     skybox->getComponent<Model>()->addMesh(mesh, 5.f,  this->materials[0], this->shaders[1], this->textures[0], this->textures[0]);
     this->gameObjects.push_back(skybox);
 
-    GameObject* harrower = new GameObject(glm::vec3(-3.f, 0.f, 20.f), glm::vec3(0.f, 0.f, 0.f));
+    //position -3 0 20
+    GameObject* harrower = new GameObject(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f));
     harrower->addComponent<Model>();
     mesh = loadOBJ("../OBJFiles/Harrower/Base.obj");
-    harrower->getComponent<Model>()->addMesh(mesh, 0.2f, this->materials[0], this->shaders[0], this->textures[1], this->textures[2]);
+    //scale = 0.2
+    harrower->getComponent<Model>()->addMesh(mesh, 1.0f, this->materials[0], this->shaders[0], this->textures[1], this->textures[2]);
     mesh = loadOBJ("../OBJFiles/Harrower/Sides.obj");
-    harrower->getComponent<Model>()->addMesh(mesh, 0.2f, this->materials[0], this->shaders[0], this->textures[3], this->textures[4]);
+    harrower->getComponent<Model>()->addMesh(mesh, 1.0f, this->materials[0], this->shaders[0], this->textures[3], this->textures[4]);
     mesh = loadOBJ("../OBJFiles/Harrower/Details.obj");
-    harrower->getComponent<Model>()->addMesh(mesh, 0.2f, this->materials[0], this->shaders[0], this->textures[9], this->textures[10]);
+    harrower->getComponent<Model>()->addMesh(mesh, 1.0f, this->materials[0], this->shaders[0], this->textures[9], this->textures[10]);
     mesh = loadOBJ("../OBJFiles/Harrower/Ports.obj");
-    harrower->getComponent<Model>()->addMesh(mesh, 0.2f, this->materials[0], this->shaders[0], this->textures[13], this->textures[14]);
+    harrower->getComponent<Model>()->addMesh(mesh, 1.0f, this->materials[0], this->shaders[0], this->textures[13], this->textures[14]);
+
+    harrower->addComponent<MeshCollider>();
+    mesh = loadOBJ("../OBJFiles/HarrowerHitbox.obj");
+    harrower->getComponent<MeshCollider>()->initialize(mesh);
     this->gameObjects.push_back(harrower);
 
-    GameObject* valor = new GameObject(glm::vec3(3.f, 0.f, -10.f), glm::vec3(0.f, 240.f, 0.f));
+    GameObject* valor = new GameObject(glm::vec3(3.f, 0.f, -100.f), glm::vec3(0.f, 240.f, 0.f));
     valor->addComponent<Model>();
 
     auto meshes = loadOBJwithManyMeshes("../OBJFiles/Valor.obj");
@@ -108,14 +114,17 @@ void SpaceScene::initObjects()
     valor->getComponent<Model>()->addMesh(meshes[5], 0.4f, this->materials[0], this->shaders[0], this->textures[21], this->textures[20]);
     valor->getComponent<Model>()->addMesh(meshes[6], 0.4f, this->materials[0], this->shaders[0], this->textures[15], this->textures[16]);
     std::cout << "SIZE = " << meshes.size() << std::endl;
+    valor->addComponent<SphereCollider>();
+    valor->getComponent<SphereCollider>()->initialize(10);
     this->gameObjects.push_back(valor);
 
     GameObject* camera = new GameObject(glm::vec3(-10.f, 0.f, 0.f), glm::vec3(0.f, -90.f, 0.f));
     camera->addComponent<Camera>();
-    Starship* shipModel = new Starship(glm::vec3(-9.f, 0.05f, 0.f), glm::vec3(0.f, -90.f, 0.f));
+    Starship* shipModel = new Starship(glm::vec3(-9.f, 15.f, 60.f), glm::vec3(0.f, -90.f, 0.f));
     this->gameObjects.push_back(camera);
     this->renderCamera = camera->getComponent<Camera>();
 
+    //-9.4f, -0.05f, 0.f
     GameObject* liberator = new GameObject(glm::vec3(-9.4f, -0.05f, 0.f), glm::vec3(0.f, 90.f, 0.f));
     liberator->addComponent<Model>();
     mesh = loadOBJ("../OBJFiles/Liberator.obj");
@@ -126,6 +135,8 @@ void SpaceScene::initObjects()
     liberator->getComponent<Presenter>()->initialize(shipModel);
     camera->addComponent<Follower>();
     camera->getComponent<Follower>()->initialize(liberator, glm::vec3(0, -0.05, 0.5f));
+    liberator->addComponent<SphereCollider>();
+    liberator->getComponent<SphereCollider>()->initialize(1);
     this->gameObjects.push_back(liberator);
 
     GameObject* direcionalLight = new GameObject(glm::vec3(-50.f, 50.f, 50.f), glm::vec3(0.f, 0.f, 0.f));

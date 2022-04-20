@@ -7,20 +7,25 @@
 
 #include "vector"
 #include "Collider.h"
+
+#include <utility>
 #include "../Engine/Mesh.h"
 
 class MeshCollider : public Collider{
 private:
-    Mesh* mesh;
+    std::vector<Vertex> Vertexes{};
 public:
-    Mesh* getMesh() const{return mesh;}
-    MeshCollider(GameObject* object, bool enabledOnStart) : Collider(object, enabledOnStart) {}
-    void initialize(Mesh* mesh){
-        this->mesh = mesh;
+    std::vector<Vertex> get_vertexArray() const{return Vertexes;}
+
+    MeshCollider(GameObject* object) : Collider(object) {}
+
+    void initialize(std::vector<Vertex> vertexes){
+        this->Vertexes = std::move(vertexes);
     }
     void CollisionExecution(Collider* aim){
-
+        std::cout << "Collision from Mesh\n";
     }
+
 };
 
 #endif //SWTOR_MESHCOLLIDER_H

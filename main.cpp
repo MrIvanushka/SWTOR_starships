@@ -3,7 +3,7 @@
 int main()
 {
     Game game("SWTOR",
-              2880, 1800,
+              1920, 1080,
               4, 4,
               false);
 

@@ -10,17 +10,20 @@
 
 class SphereCollider : public Collider{
 private:
-    float radius = 0;
+    float radius = 10;
 public:
     float getRadius() const{return radius;}
-    SphereCollider(GameObject* object, bool enabledOnStart) : Collider(object, enabledOnStart) {}
-    void initialize(float radius){
-        radius = radius;
+
+    explicit SphereCollider(GameObject* object) : Collider(object) {}
+
+    void initialize(float radius_){
+        radius = radius_;
     }
 
-    void CollisionExecution(Collider* aim){
-
+    void CollisionExecution(Collider* aim) override{
+        std::cout << "Collision from Sphere\n";
     }
+
 };
 
 #endif //SWTOR_SPHERECOLLIDER_H

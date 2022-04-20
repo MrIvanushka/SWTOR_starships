@@ -29,11 +29,11 @@ public:
         CollidedWith.insert(collider);
     }
     void setIsCollided(bool is_collided){ IsCollided = is_collided; }
-    Collider(GameObject *gameObject, bool enabledOnStart) : Component(gameObject, enabledOnStart) {}
+    Collider(GameObject *gameObject) : Component(gameObject, true) {}
     GameObject* getObject(){
         return gameObject;
     }
-    virtual void CollisionExecution(){}
+    virtual void CollisionExecution(Collider* aim){}
 };
 
 #endif //SWTOR_COLLIDER_H

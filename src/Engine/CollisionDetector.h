@@ -17,14 +17,17 @@
 class CollisionDetector {
 public:
     CollisionDetector() = default;
-    void initialize(std::vector<Collider*> colliders){
-        Colliders = std::move(colliders);
+    void initialize(const std::vector<GameObject*>& Bodies){
+        for (auto Body : Bodies){
+            Colliders.push_back(Body->getComponent<Collider>());
+        }
     }
     void update();
 private:
-    std::vector<Collider*> Colliders;
+    std::vector<Collider*> Colliders = {};
     void CollisionProcessing(Collider* first, Collider* second);
-
+    static bool IntersectTriangleWithNormal(const std::vector<Vertex>& verts, glm::vec3 normal, glm::vec3 point);
+    float Distance(Collider* first, Collider* second);
 };
 
 

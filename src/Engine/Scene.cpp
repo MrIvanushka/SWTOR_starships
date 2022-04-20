@@ -12,6 +12,7 @@ void Scene::initialize(int GL_VERSION_MAJOR, int GL_VERSION_MINOR, int frameBuff
     this->initMaterials();
     this->initObjects();
     this->initUniforms(frameBufferWidth, frameBufferHeight);
+    this->Collision_Detector.initialize(this->gameObjects);
 }
 
 Scene::~Scene()
@@ -72,6 +73,7 @@ void Scene::update(float deltaTime)
     {
         object->update(deltaTime);
     }
+    Collision_Detector.update();
 }
 
 void Scene::render()
