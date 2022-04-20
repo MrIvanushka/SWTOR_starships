@@ -199,7 +199,6 @@ void CollisionDetector::CollisionProcessing(Collider* first, Collider* second){
 
 
 void CollisionDetector::update(){
-    std::cout << "CollisionDetector update called \n";
     for (int i = 0; i < Colliders.size(); ++i){
         for (int j = i + 1; j < Colliders.size(); ++j){
             if (Colliders[j] != Colliders[i]){
