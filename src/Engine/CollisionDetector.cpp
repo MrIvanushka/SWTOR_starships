@@ -38,7 +38,7 @@ float CollisionDetector::Distance(Collider *first, Collider *second) {
 
     // ==========Sphere1 and Sphere2==========
     if (Sphere1 != nullptr and Sphere2 != nullptr){
-//        std::cout << "Two Spheres : " << glm::length(Sphere1->getObject()->getPosition() -
+//        std::cout << "\nTwo Spheres : " << glm::length(Sphere1->getObject()->getPosition() -
 //        Sphere2->getObject()->getPosition());
         return glm::length(Sphere1->getObject()->getPosition() - Sphere2->getObject()->getPosition());
     }
@@ -91,6 +91,7 @@ float CollisionDetector::Distance(Collider *first, Collider *second) {
             min = 999999999.;
             for (auto vertex : Vertexes) {
                 float dist = std::abs(glm::dot(vertex->position - Sphere1->getObject()->getPosition(), vertex->normal));
+//                std::cout << dist << "; \n";
                 if (dist < min) {
                     min = dist;
                 }
@@ -148,12 +149,13 @@ float CollisionDetector::Distance(Collider *first, Collider *second) {
             min = 999999999.;
             for (auto vertex : Vertexes) {
                 float dist = std::abs(glm::dot(vertex->position - Sphere2->getObject()->getPosition(), vertex->normal));
+//                std::cout << dist << "; \n";
                 if (dist < min) {
                     min = dist;
                 }
             }
         }
-        std::cout << " Sphere2 and Mesh1 - " << min << '\n';
+//        std::cout << " Sphere2 and Mesh1 -> " << min << '\n';
         return min;
     }
 
@@ -187,7 +189,7 @@ void CollisionDetector::CollisionProcessing(Collider* first, Collider* second){
         }
 
         else if (Sphere2 != nullptr){
-            if (distance < Sphere2->getRadius()){
+            if (distance < Sphere2->getRadius() and std::abs(distance - 0.237693) >= 1E-3){
                 Sphere2->CollisionExecution(first);
                 first->CollisionExecution(Sphere2);
             }
