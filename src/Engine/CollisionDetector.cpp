@@ -38,8 +38,6 @@ float CollisionDetector::Distance(Collider *first, Collider *second) {
 
     // ==========Sphere1 and Sphere2==========
     if (Sphere1 != nullptr and Sphere2 != nullptr){
-//        std::cout << "\nTwo Spheres : " << glm::length(Sphere1->getObject()->getPosition() -
-//        Sphere2->getObject()->getPosition());
         return glm::length(Sphere1->getObject()->getPosition() - Sphere2->getObject()->getPosition());
     }
 

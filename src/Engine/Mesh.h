@@ -30,7 +30,6 @@ private:
     glm::mat4 ModelMatrix;
 
     friend class MeshRenderer;
-    friend class MeshCollider;
 
     void updateModelMatrix()
     {

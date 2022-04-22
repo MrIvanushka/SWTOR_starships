@@ -19,13 +19,31 @@ public:
 
     MeshCollider(GameObject* object) : Collider(object) {}
 
-    void initialize(std::vector<Vertex> vertexes){
+    void initialize(std::vector<Vertex> vertexes, float scale, glm::vec3 rotation){
+        auto quaternion = this->getObject()->getRotation();
+        for (auto& vertex : vertexes){
+            vertex.position *= scale;
+//            vertex.position = vertex.position * quaternion;
+            vertex.position += this->getObject()->getPosition();
+        }
         this->Vertexes = std::move(vertexes);
     }
-    void CollisionExecution(Collider* aim){
+
+    void CollisionExecution(Collider* aim) override{
         std::cout << "Collision from Mesh\n";
     }
 
+    void render() override{
+        for (auto vert1 : Vertexes) {
+            for (auto vert2 : Vertexes){
+                glBegin(GL_LINES);
+                glColor3d(1,0,0);
+                glVertex3f(vert1.position.x, vert1.position.y, vert1.position.z);
+                glVertex3f(vert2.position.x, vert2.position.y, vert2.position.z);
+                glEnd();
+            }
+        }
+    }
 };
 
 #endif //SWTOR_MESHCOLLIDER_H
