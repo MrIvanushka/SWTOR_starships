@@ -4,15 +4,15 @@
 
 #include "Bullet.h"
 
-Bullet::Bullet(glm::vec3 position, glm::vec3 direction) : Transformable(position, direction), damage(10)
+Bullet::Bullet(glm::vec3 position, glm::quat orientation) : Transformable(position, orientation)
 {}
 
 void Bullet::update(float deltaTime)
 {
-
+    move(getFront() * speed * deltaTime);
 }
 
-void getDamage()
+float Bullet::getDamage()
 {
-
+    return damage;
 }

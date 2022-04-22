@@ -35,4 +35,17 @@ public:
     }
 };
 
+class BulletPresenter : public Presenter
+{
+public:
+    BulletPresenter(GameObject* object) : Presenter(object)
+    {}
+
+    void activate(Transformable* model)
+    {
+        initialize(model);
+        gameObject->setActive(true);
+    }
+};
+
 #endif //SWTOR_PRESENTER_H

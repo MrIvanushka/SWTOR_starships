@@ -32,19 +32,21 @@ GameObject::~GameObject()
 
 void GameObject::update(float deltaTime)
 {
-    for (Component* component : this->components)
-    {
-        if(component->enabled)
-            component->update(deltaTime);
+    if(isActive) {
+        for (Component *component: this->components) {
+            if (component->enabled)
+                component->update(deltaTime);
+        }
     }
 }
 
 void GameObject::render()
 {
-    for (Component* component : this->components)
-    {
-        if (component->enabled)
-            component->render();
+    if(isActive) {
+        for (Component *component: this->components) {
+            if (component->enabled)
+                component->render();
+        }
     }
 }
 
@@ -71,4 +73,12 @@ void GameObject::rotateAt(glm::quat newRot) {
 
 void GameObject::rotateAt(glm::vec3 newRot) {
     rotate(glm::quat(newRot));
+}
+
+void GameObject::setActive(bool value) {
+    this->isActive = value;
+}
+
+bool GameObject::activeSelf() {
+    return this->isActive;
 }

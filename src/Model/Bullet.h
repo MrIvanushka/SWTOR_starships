@@ -10,14 +10,13 @@
 class Bullet : public Transformable
 {
 private:
+    float speed = 10;
     float damage;
     glm::vec3 position = glm::vec3(0, 0, 0);
 public:
-    Bullet(glm::vec3 position, glm::vec3 direction);
-
+    Bullet(glm::vec3 position, glm::quat orientation);
     void update(float deltaTime) override;
-
-    void getDamage();
+    float getDamage();
 };
 
 #endif //SWTOR_BULLET_H

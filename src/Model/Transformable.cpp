@@ -6,6 +6,11 @@ Transformable::Transformable(glm::vec3 position, glm::vec3 rotation)
     this->front = glm::vec3(0, 0, 1) * this->rotation;
 }
 
+Transformable::Transformable(glm::vec3 position, glm::quat rotation) : position(position), rotation(rotation)
+{
+    this->front = glm::vec3(0, 0, 1) * this->rotation;
+}
+
 void Transformable::rotate(glm::vec3 delta)
 {
     rotate(glm::quat(rotation));
@@ -14,6 +19,7 @@ void Transformable::rotate(glm::vec3 delta)
 void Transformable::rotate(glm::quat delta)
 {
     this->rotation = this->rotation * delta;
+    this->rotation = normalize(this->rotation);
     this->front = glm::vec3(0, 0, 1) * this->rotation;
 }
 
