@@ -26,7 +26,6 @@ private:
     glm::vec3 position;
     glm::quat rotation;
     glm::vec3 front;
-
 };
 
 #endif //SWTOR_TRANSFORMABLE_H

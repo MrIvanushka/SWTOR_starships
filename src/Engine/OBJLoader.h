@@ -201,9 +201,9 @@ static std::vector<std::vector<Vertex>> loadOBJwithManyMeshes(const char* file_n
         else if (prefix == "usemtl")
         {
             current_index++;
-            vertex_position_indicies.push_back(std::vector<GLint>());
-            vertex_texcoord_indicies.push_back(std::vector<GLint>());
-            vertex_normal_indicies.push_back(std::vector<GLint>());
+            vertex_position_indicies.emplace_back();
+            vertex_texcoord_indicies.emplace_back();
+            vertex_normal_indicies.emplace_back();
         }
         else if (prefix == "v") //Vertex position
         {

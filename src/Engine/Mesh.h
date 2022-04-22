@@ -13,7 +13,8 @@
 #include"Shader.h"
 #include"Texture.h"
 #include"Material.h"
-#include "GameObject.h"
+#include"GameObject.h"
+
 
 class Mesh
 {
@@ -29,6 +30,7 @@ private:
     glm::mat4 ModelMatrix;
 
     friend class MeshRenderer;
+    friend class MeshCollider;
 
     void updateModelMatrix()
     {

@@ -13,10 +13,12 @@
 #include "GameObject.h"
 #include "../Components/Light.h"
 #include "../Components/Model.h"
+#include "CollisionDetector.h"
 
 class Scene
 {
 protected:
+    CollisionDetector Collision_Detector;
     std::vector<Shader*> shaders;
     std::vector<Texture*> textures;
     std::vector<Material*> materials;
