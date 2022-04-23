@@ -11,7 +11,7 @@ void Weapon::shoot()
 {
     if(canShoot())
     {
-        currentTime -= reloadingDuration;
+        currentTime = 0;
         Bullet* bullet = new Bullet(shooter->getPosition() + weaponOffset * shooter->getRotation(), shootingOrientation * shooter->getRotation());
         this->invoke(bullet);
     }

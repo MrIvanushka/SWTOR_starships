@@ -12,22 +12,24 @@
 class PlayerShootingController : public Component
 {
 private:
-    Weapon* model;
+    std::vector<Weapon*> models;
 public:
     PlayerShootingController(GameObject* object) : Component(object)
     {}
 
-    void initialize(Weapon* model)
+    void insertModel(Weapon* model)
     {
-        this->model = model;
+        this->models.push_back(model);
     }
 
     void update(float deltaTime) override
     {
-        model->update(deltaTime);
+        for(auto* model : models) {
+            model->update(deltaTime);
 
-        if(Input::getInstance()->keyIsPressed("LM"))
-            model->shoot();
+            if (Input::getInstance()->keyIsPressed("LM"))
+                model->shoot();
+        }
     }
 };
 

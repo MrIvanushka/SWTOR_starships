@@ -11,7 +11,7 @@
 class Weapon : public ArgObservable<Bullet*>, IUpdatable
 {
 private:
-    float reloadingDuration = 1;
+    float reloadingDuration = 0.3f;
     float currentTime = 1;
     Transformable* shooter;
     glm::vec3 weaponOffset;

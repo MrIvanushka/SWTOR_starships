@@ -32,18 +32,6 @@ public:
     void CollisionExecution(Collider* aim) override{
         std::cout << "Collision from Mesh\n";
     }
-
-    void render() override{
-        for (auto vert1 : Vertexes) {
-            for (auto vert2 : Vertexes){
-                glBegin(GL_LINES);
-                glColor3d(1,0,0);
-                glVertex3f(vert1.position.x, vert1.position.y, vert1.position.z);
-                glVertex3f(vert2.position.x, vert2.position.y, vert2.position.z);
-                glEnd();
-            }
-        }
-    }
 };
 
 #endif //SWTOR_MESHCOLLIDER_H

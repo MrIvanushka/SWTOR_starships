@@ -125,7 +125,6 @@ void SpaceScene::initObjects()
     GameObject* camera = new GameObject(glm::vec3(-10.f, 0.f, 0.f), glm::vec3(0.f, -90.f, 0.f));
     camera->addComponent<Camera>();
     Starship* shipModel = new Starship(glm::vec3(-9.f, 0.05f, 0.f), glm::vec3(0.f, -90.f, 0.f));
-    this->gameObjects.push_back(camera);
     this->renderCamera = camera->getComponent<Camera>();
 
     //-9.4f, -0.05f, 0.f
@@ -145,7 +144,7 @@ void SpaceScene::initObjects()
     {
         GameObject* bullet = new GameObject(glm::vec3(-8.75f, -0.01f, -0.265f), glm::vec3(0.f, 90.f, 0.f));
         bullet->addComponent<Model>();
-        bullet->getComponent<Model>()->addMesh(mesh, 0.1f, this->materials[0], this->shaders[1], this->textures[28], this->textures[4]);
+        bullet->getComponent<Model>()->addMesh(mesh, 0.3f, this->materials[0], this->shaders[1], this->textures[28], this->textures[4]);
         bullet->addComponent<BulletPresenter>();
         bullet->getComponent<BulletPresenter>()->initialize(new Bullet(glm::vec3(-50.f, 50.f, 50.f), glm::vec3(0.f, 0.f, 0.f)));
         bullet->setActive(false);
@@ -154,16 +153,19 @@ void SpaceScene::initObjects()
     }
     liberator->getComponent<ShootingHandler>()->initialize(bullets);
     liberator->addComponent<PlayerShootingController>();
-    Weapon* liberatorWeapon = new Weapon(shipModel, glm::vec3(0.65, -0.2, 0.5), glm::vec3(0, 0, 0));
-    liberatorWeapon->Attach(liberator->getComponent<ShootingHandler>());
-    liberator->getComponent<PlayerShootingController>()->initialize(liberatorWeapon);
+    Weapon* liberatorWeapon1 = new Weapon(shipModel, glm::vec3(0.65, -0.2, 0.5), glm::vec3(0, 0, 0));
+    Weapon* liberatorWeapon2 = new Weapon(shipModel, glm::vec3(-0.65, -0.2, 0.5), glm::vec3(0, 0, 0));
+    liberatorWeapon1->Attach(liberator->getComponent<ShootingHandler>());
+    liberatorWeapon2->Attach(liberator->getComponent<ShootingHandler>());
+    liberator->getComponent<PlayerShootingController>()->insertModel(liberatorWeapon1);
+    liberator->getComponent<PlayerShootingController>()->insertModel(liberatorWeapon2);
 
     camera->addComponent<Follower>();
     camera->getComponent<Follower>()->initialize(liberator, glm::vec3(0, -0.05, 0.5f));
     liberator->addComponent<SphereCollider>();
     liberator->getComponent<SphereCollider>()->initialize(1);
     this->gameObjects.push_back(liberator);
-
+    this->gameObjects.push_back(camera);
 
 
     GameObject* direcionalLight = new GameObject(glm::vec3(-50.f, 50.f, 50.f), glm::vec3(0.f, 0.f, 0.f));

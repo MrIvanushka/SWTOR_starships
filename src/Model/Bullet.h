@@ -10,7 +10,7 @@
 class Bullet : public Transformable
 {
 private:
-    float speed = 10;
+    float speed = 60;
     float damage;
     glm::vec3 position = glm::vec3(0, 0, 0);
 public:
