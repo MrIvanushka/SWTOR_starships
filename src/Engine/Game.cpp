@@ -3,10 +3,8 @@
 //
 #include "Game.h"
 
-//Private functions
 void Game::initGLFW()
 {
-    //INIT GLFW
     if (glfwInit() == GLFW_FALSE)
     {
         std::cout << "ERROR::GLFW_INIT_FAILED" << "\n";
@@ -24,8 +22,6 @@ void Game::initWindow(
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, this->GL_VERSION_MINOR);
     glfwWindowHint(GLFW_RESIZABLE, resizable);
 
-    //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); MAC OS
-
     this->window = glfwCreateWindow(this->WINDOW_WIDTH, this->WINDOW_HEIGHT, title, NULL, NULL);
 
     if (this->window == nullptr)
@@ -36,9 +32,6 @@ void Game::initWindow(
 
     glfwGetFramebufferSize(this->window, &this->framebufferWidth, &this->framebufferHeight);
     glfwSetFramebufferSizeCallback(window, Game::framebuffer_resize_callback);
-    //IMPORTANT WHITH PERSPECTIVE MATRIX!!!
-
-    //glViewport(0, 0, framebufferWidth, framebufferHeight);
 
     glfwMakeContextCurrent(this->window); //IMPORTANT!!
 }
@@ -116,6 +109,7 @@ Game::Game(
 Game::~Game()
 {
     glfwDestroyWindow(this->window);
+    delete scenes[currentSceneIndex];
     glfwTerminate();
 }
 
